@@ -2,6 +2,8 @@ import React from "react";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import FacebookLogin from "@greatsumini/react-facebook-login";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from 'react-toastify'; 
+import 'react-toastify/dist/ReactToastify.css'; 
 
 const Login = () => {
   const navigate = useNavigate();
@@ -9,12 +11,14 @@ const Login = () => {
   const handleGoogleSuccess = (response) => {
     const jwt = response.credential;
     localStorage.setItem("token", jwt);
+     toast.success("Logged in successfully!");
     navigate("/dashboard");
   };
 
   const handleFacebookSuccess = (response) => {
     if (response.accessToken) {
       localStorage.setItem("token", response.accessToken);
+       toast.success("Logged in successfully!");
       navigate("/dashboard");
     }
   };
@@ -25,8 +29,7 @@ const Login = () => {
         <h2 className="mb-4 text-primary">Blog Login</h2>
         <p className="text-muted">Sign in to continue</p>
 
-        {/* Google Login */}
-        <GoogleOAuthProvider clientId="463448446742-lenlnqf98q4oqogljq33nscbcsc0n6pm.apps.googleusercontent.com">
+        <GoogleOAuthProvider clientId="393246415778-5i1ijc3vavq8041hmavhnl8vsgn6b868.apps.googleusercontent.com">
           <GoogleLogin onSuccess={handleGoogleSuccess} onError={() => console.log("Google Login Failed")} />
         </GoogleOAuthProvider>
 
@@ -34,12 +37,11 @@ const Login = () => {
           <span className="text-muted">OR</span>
         </div>
 
-        {/* Facebook Login */}
         <FacebookLogin
           appId="652347930618140"
           onSuccess={handleFacebookSuccess}
-          onFail={(error) => console.log("Facebook Login Failed:", error)}
-          onProfileSuccess={(response) => console.log("Profile Success:", response)}
+          onFail={(error) => console.log("Failed", error)}
+          onProfileSuccess={(response) => console.log("Success", response)}
         />
       </div>
     </div>
